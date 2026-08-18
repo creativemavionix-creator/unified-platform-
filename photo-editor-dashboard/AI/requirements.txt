@@ -1,0 +1,12 @@
+# Install torch separately first with the correct CUDA index URL — see SETUP.md
+# pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+diffusers>=0.30.0
+transformers>=4.44.0
+accelerate>=0.33.0
+safetensors>=0.4.3
+xformers>=0.0.27
+pillow>=10.4.0
+numpy>=1.26.0
+rembg>=2.0.57
+onnxruntime-gpu>=1.18.0

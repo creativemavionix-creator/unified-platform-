@@ -1,0 +1,11 @@
+import { CheckSquare, Download, Square } from 'lucide-react';
+import { useState } from 'react';
+import { useGeneratedImages } from '../../../../lib/generated-images';
+const card = 'rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0c0c14] p-5';
+
+export default function ExportTab() {
+  const { images, loading, error } = useGeneratedImages(); const [selected, setSelected] = useState<string[]>([]);
+  const toggle = (id: string) => setSelected((current) => current.includes(id) ? current.filter((value) => value !== id) : [...current, id]);
+  const download = () => images.filter((image) => selected.includes(image.filename)).forEach((image) => { const link = document.createElement('a'); link.href = image.url; link.download = image.filename; link.click(); });
+  return <div className="grid gap-6 lg:grid-cols-[1fr_320px]"><div className={card}><div className="mb-4 flex justify-between"><span className="text-xs font-black uppercase tracking-wider text-slate-400">Select generated images</span><span className="text-xs text-purple-500">{selected.length} selected</span></div>{error && <p className="text-sm text-red-500">{error}</p>}{loading ? <p className="py-16 text-center text-sm text-slate-400">Loading images…</p> : <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">{images.map((image) => <button key={image.id} onClick={() => toggle(image.filename)} className="relative aspect-square overflow-hidden rounded-xl"><img src={image.url} alt={image.prompt} className="h-full w-full object-cover" />{selected.includes(image.filename) ? <CheckSquare className="absolute left-2 top-2 text-purple-500" /> : <Square className="absolute left-2 top-2 text-white" />}</button>)}</div>}</div><div className={card}><p className="text-xs font-black uppercase tracking-wider text-slate-400">Export</p><p className="mt-4 text-sm text-slate-500">Downloads preserve the backend PNG output. Image conversion and 4K export are coming soon.</p><button disabled={!selected.length} onClick={download} className="mt-5 w-full rounded-full bg-purple-700 py-3 text-xs font-black uppercase text-white disabled:opacity-50"><Download size={14} className="mr-1 inline" />Download {selected.length || ''}</button></div></div>;
+}

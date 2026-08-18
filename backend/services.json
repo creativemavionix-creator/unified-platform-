@@ -1,0 +1,23 @@
+{
+  "gateway_port": 8080,
+  "services": [
+    {
+      "id": "image",
+      "name": "AI Image / Photo Editor API",
+      "cwd": "photo-editor-dashboard/api",
+      "module": "app.main:app",
+      "port": 8000,
+      "env_file": ".env",
+      "health": "http://127.0.0.1:8000/api/health"
+    },
+    {
+      "id": "presentation",
+      "name": "AI Presentation Builder API",
+      "cwd": "ai-presentation-builder/api",
+      "module": "app.main:app",
+      "port": 8001,
+      "env_file": ".env",
+      "health": "http://127.0.0.1:8001/api/health"
+    }
+  ]
+}

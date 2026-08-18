@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Brand tokens copied from the main eMavionics site (src/index.css) so this
+   module's purple accents stay in sync with the host site's theme. */
+:root {
+  --brand-blue-50: #faf5ff;
+  --brand-blue-100: #f3e8ff;
+  --brand-blue-200: #e9d5ff;
+  --brand-blue-400: #a855f7;
+  --brand-blue-500: #7c3aed;
+  --brand-blue-600: #6d28d9;
+  --brand-blue-900: #4c1d95;
+  --brand-blue-950: #2e1065;
+  --mavionix-purple: #C800FF;
+}
+
+.dark {
+  --brand-blue-50: rgba(168, 85, 247, 0.08);
+  --brand-blue-100: rgba(168, 85, 247, 0.18);
+  --brand-blue-200: rgba(168, 85, 247, 0.32);
+  --brand-blue-400: #d8b4fe;
+  --brand-blue-500: #a855f7;
+  --brand-blue-600: #c084fc;
+  --brand-blue-900: #3b0764;
+  --brand-blue-950: #120224;
+}
+
+html {
+  font-family: 'Inter', system-ui, sans-serif;
+}

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "target": "es2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -22,5 +23,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "photo-editor-dashboard", "video-generator-dashboard-fixed", "ai-presentation-builder", "lead-crm-dashboard"]
+  "exclude": ["node_modules", "photo-editor-dashboard", "video-generator-dashboard-fixed", "ai-presentation-builder", "lead-crm-dashboard", "webdev-dashboard"]
 }

@@ -23,8 +23,10 @@ import {
   upcomingFollowups,
 } from '@/lib/crm/metrics';
 
+export type CrmTabId = 'dashboard' | 'leads' | 'assistant' | 'workflows' | 'analytics';
+
 interface DashboardTabProps {
-  onNavigate: (tab: string) => void;
+  onNavigate: (tab: CrmTabId) => void;
 }
 
 const cardStyle =

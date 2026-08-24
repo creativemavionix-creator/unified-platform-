@@ -95,6 +95,52 @@ export function updateLead(leadId: string, patch: Partial<Lead>): Lead | null {
   return updated;
 }
 
+const AVATAR_COLORS = [
+  '#8b5cf6', '#7c3aed', '#ec4899', '#f43f5e', '#3b82f6', '#06b6d4', '#10b981', '#f59e0b', '#6366f1'
+];
+
+export function addLead(data: Partial<Lead> & { name: string; company: string }): Lead {
+  const state = readState();
+  const id = data.id || uid("lead");
+  const avatarColor = data.avatarColor || AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
+  const score = typeof data.score === 'number' ? data.score : (data.priority === 'high' ? 85 : data.priority === 'low' ? 45 : 65);
+  const newLead: Lead = {
+    id,
+    name: data.name.trim(),
+    company: data.company.trim(),
+    title: data.title?.trim() || "Decision Maker",
+    email: data.email?.trim() || `${data.name.toLowerCase().replace(/\s+/g, '.')}@${data.company.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`,
+    phone: data.phone?.trim() || "+1 (555) 019-2834",
+    industry: data.industry?.trim() || "Enterprise Tech",
+    location: data.location?.trim() || "San Francisco, CA",
+    source: data.source?.trim() || "Inbound Website",
+    website: data.website?.trim() || `${data.company.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`,
+    status: data.status || "new",
+    priority: data.priority || "medium",
+    score,
+    buyingIntent: typeof data.buyingIntent === 'number' ? data.buyingIntent : Math.min(100, Math.round(score * 0.95)),
+    engagementScore: typeof data.engagementScore === 'number' ? data.engagementScore : Math.min(100, Math.round(score * 0.9)),
+    conversionProbability: typeof data.conversionProbability === 'number' ? data.conversionProbability : Math.min(100, Math.round(score * 0.8)),
+    fitScore: typeof data.fitScore === 'number' ? data.fitScore : Math.min(100, Math.round(score * 1.05)),
+    tags: Array.isArray(data.tags) && data.tags.length ? data.tags : ["New Inbound"],
+    assignedTo: data.assignedTo?.trim() || "AI SDR Agent",
+    createdAt: data.createdAt || new Date().toISOString(),
+    lastActivity: "Just now",
+    aiSummary: data.aiSummary?.trim() || `New inbound opportunity from ${data.name} at ${data.company}. High-potential target profile ready for SDR engagement.`,
+    nextAction: data.nextAction?.trim() || "Send initial introduction email",
+    avatarColor,
+  };
+  state.leads = [newLead, ...state.leads];
+  writeState(state);
+  return newLead;
+}
+
+export function deleteLead(leadId: string): void {
+  const state = readState();
+  state.leads = state.leads.filter((l) => l.id !== leadId);
+  writeState(state);
+}
+
 export function addActivity(item: Omit<ActivityItem, "id" | "time"> & { time?: string }): ActivityItem {
   const state = readState();
   const activity: ActivityItem = {

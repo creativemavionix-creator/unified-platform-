@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  LayoutDashboard, Users, Bot, Workflow, BarChart3, Bell, ChevronDown, Target, Plus, ArrowLeft,
+  LayoutDashboard, Users, Bot, Workflow, BarChart3, ChevronDown, Target, Plus, ArrowLeft,
 } from 'lucide-react';
-import { NOTIFICATIONS } from './leadCrmMockData';
 import DashboardTab from './tabs/DashboardTab';
 import LeadsTab from './tabs/LeadsTab';
 import AssistantTab from './tabs/AssistantTab';
@@ -31,10 +30,9 @@ export default function LeadCrmWorkspace({ onBack, onViewChange }: Props) {
   const { state } = useCrmStore();
   const [activeTab, setActiveTab] = useState<TabId>('dashboard');
   const [navMenuOpen, setNavMenuOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
+  const [createLeadModalOpen, setCreateLeadModalOpen] = useState(false);
   const [ollama, setOllama] = useState<'checking' | 'ok' | 'unreachable'>('checking');
   const navMenuRef = useRef<HTMLDivElement>(null);
-  const unreadCount = NOTIFICATIONS.filter((n) => n.unread).length;
   const aiActions = state.activities.filter((a) => a.aiGenerated).length;
   const totalLeads = state.leads.length;
 
@@ -75,7 +73,13 @@ export default function LeadCrmWorkspace({ onBack, onViewChange }: Props) {
       case 'dashboard':
         return <DashboardTab onNavigate={goto} />;
       case 'leads':
-        return <LeadsTab />;
+        return (
+          <LeadsTab
+            isCreateOpen={createLeadModalOpen}
+            onCloseCreate={() => setCreateLeadModalOpen(false)}
+            onOpenCreate={() => setCreateLeadModalOpen(true)}
+          />
+        );
       case 'assistant':
         return <AssistantTab />;
       case 'workflows':
@@ -195,31 +199,13 @@ export default function LeadCrmWorkspace({ onBack, onViewChange }: Props) {
               )}
             </AnimatePresence>
           </div>
-          <div className="flex items-center gap-2 sm:gap-3 relative">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
-              onClick={() => setNotifOpen((v) => !v)}
-              className="relative flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 dark:border-slate-700/70 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-            >
-              <Bell size={16} />
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-purple-600 text-[9px] font-bold text-white">
-                  {unreadCount}
-                </span>
-              )}
-            </button>
-            {notifOpen && (
-              <div className="absolute right-0 top-11 w-72 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0c0c14] shadow-xl p-2 z-40">
-                {NOTIFICATIONS.map((n) => (
-                  <div key={n.id} className="rounded-xl px-3 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-900/70">
-                    <p className="text-[12.5px] font-medium text-slate-700 dark:text-slate-200">{n.text}</p>
-                    <p className="mt-0.5 text-[10.5px] text-slate-400">{n.time}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-            <button
-              onClick={() => goto('leads')}
-              className="btn-primary hidden sm:inline-flex items-center gap-1.5 rounded-full px-4 h-9 text-[11px] font-black uppercase tracking-wider transition-transform hover:-translate-y-0.5"
+              onClick={() => {
+                goto('leads');
+                setCreateLeadModalOpen(true);
+              }}
+              className="btn-primary inline-flex items-center gap-1.5 rounded-full px-4 h-9 text-[11px] font-black uppercase tracking-wider transition-transform hover:-translate-y-0.5 shadow-md shadow-purple-500/20"
             >
               <Plus size={14} />
               New Lead

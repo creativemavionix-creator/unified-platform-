@@ -12,10 +12,11 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["../*"]
     },
+    "types": ["vite/client"],
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "include": ["src"]
+  "include": ["src", "../*.d.ts"]
 }

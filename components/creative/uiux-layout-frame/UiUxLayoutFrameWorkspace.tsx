@@ -551,7 +551,7 @@ export default function UiUxLayoutFrameWorkspace() {
 
     if (!selectedIds.has(component.id)) {
       if (e.shiftKey) {
-        setSelectedIds(new Set([...selectedIds, component.id]));
+        setSelectedIds(new Set([...Array.from(selectedIds), component.id]));
       } else {
         setSelectedIds(new Set([component.id]));
       }

@@ -7,7 +7,9 @@ import {
 const card = 'rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0c0c14] p-5 sm:p-6';
 const label = 'text-[11px] font-black uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500';
 
-export default function DashboardTab({ onNavigate }: { onNavigate: (tab: string, prompt?: string) => void }) {
+export type ImageTabId = 'dashboard' | 'create' | 'gallery' | 'editor' | 'brandkit' | 'export' | 'history';
+
+export default function DashboardTab({ onNavigate }: { onNavigate: (tab: ImageTabId, prompt?: string) => void }) {
   const [heroPrompt, setHeroPrompt] = useState('');
   const recentCreations = MOCK_GALLERY.slice(0, 6);
   const favorites = MOCK_GALLERY.filter((i) => i.favorite).slice(0, 4);

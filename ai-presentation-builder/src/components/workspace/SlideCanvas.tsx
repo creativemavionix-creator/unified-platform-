@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Slide } from '../data/presentationMockData';
+import type { Slide } from '../../data/presentationMockData';
 
 function isCoverSlide(slide: Slide): boolean {
   return /title|cover/i.test(slide.layout || '') || /cover/i.test(slide.title || '');

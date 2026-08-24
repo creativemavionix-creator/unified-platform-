@@ -26,7 +26,7 @@ export function buildLeadSources(leads: Lead[]) {
     counts.set(key, (counts.get(key) || 0) + 1);
   }
   const total = Math.max(leads.length, 1);
-  return [...counts.entries()]
+  return Array.from(counts.entries())
     .map(([name, count]) => ({
       name,
       count,
